@@ -18,3 +18,20 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'accounts/register.html', { 'form': form })
+
+def login_user(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('main:home')
+            else:
+                return render(request, 'accounts/login.html', { 'error': "Your account has been disabled" })
+        else:
+            return render(request, 'accounts/login.html', { 'error': "Invalid credentials. Try again" })
+    return render(request, 'accounts/login.html')

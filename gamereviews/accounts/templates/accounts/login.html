@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center">Login:</h3>
+            <form action="" method="post">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" placeholder="Your username" class="form-control" name="username">
+
+                <label for="passowrd">Password:</label>
+                <input type="password" placeholder="Your password" class="form-control" name="password">
+
+                <br>
+                {% if error %}
+                <i style="color: red">{{ error }}</i>
+                <br>
+                {% endif %}
+                <input type="submit" value="Login" class="btn btn-danger">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
