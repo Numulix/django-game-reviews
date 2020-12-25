@@ -8,6 +8,7 @@ class Game(models.Model):
     company = models.CharField(max_length=20)
     description = models.TextField(max_length=512)
     avg_rating = models.FloatField()
+    image = models.URLField(default=None)
 
     def __str__(self):
         return self.name
