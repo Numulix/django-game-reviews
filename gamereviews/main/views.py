@@ -6,3 +6,7 @@ from .models import *
 def home(request):
     allGames = Game.objects.all()
     return render(request, 'main/index.html', { 'games': allGames })
+
+def detail(request, id):
+    game = Game.objects.get(pk=id)
+    return render(request, 'main/details.html', { 'game': game })

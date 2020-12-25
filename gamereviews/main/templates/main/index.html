@@ -1,7 +1,29 @@
-<h1>Listing all games:</h1>
+{% extends 'main/base.html' %}
 
-<ul>
-{% for game in games %}
-    <li>{{ game.name }}</li>
-{% endfor %}
-<ul>
+{% block content %}
+<br>
+<div class="container">
+    <div class="card">
+        <div class="body">
+            <div class="row">
+                {% for game in games %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="text-center">{{ game.name }}</h4>
+                            <div class="text-center">
+                                <strong>{{ game.company }}</strong>
+                                <br>
+                                <i>{{ game.release_year }}</i>
+                            </div>
+                            <a href="{% url 'main:detail' game.id %}">More info</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
