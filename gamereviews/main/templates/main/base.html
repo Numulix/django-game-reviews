@@ -27,6 +27,26 @@
             </li>
             <li class="nav-item">
             <a class="nav-link" href="{% url 'main:add_game' %}">Add a game</a>
+
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ user.username }}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a href="#" class="dropdown-item">My Profile</a>
+                <div class="dropdown-divider"></div>
+                <a href="{% url 'accounts:logout_user' %}" class="dropdown-item">Logout</a>
+              </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a href="{% url 'accounts:login_user' %}" class="nav-link">Login</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'accounts:register' %}" class="nav-link">Register</a>
+            </li>
+            {% endif %}
         </ul>
         <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
