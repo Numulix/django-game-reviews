@@ -7,7 +7,7 @@ class Game(models.Model):
     release_year = models.IntegerField(validators=[MinValueValidator(1950), MaxValueValidator(2020)])
     company = models.CharField(max_length=20)
     description = models.TextField(max_length=512)
-    avg_rating = models.FloatField()
+    avg_rating = models.FloatField(default=0)
     image = models.URLField(default=None)
 
     def __str__(self):

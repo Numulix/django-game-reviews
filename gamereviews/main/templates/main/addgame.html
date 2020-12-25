@@ -1,15 +1,18 @@
 {% extends 'main/base.html' %}
 
-{% block content %}
+{% load crispy_forms_tags %}
 
+{% block content %}
+<br>
 <div class="container">
     <div class="card">
-        <div class="card-content">
-            <h3 class="text-center">Add Game:</h3>
+        <div class="card-body">
+            <h3 class="text-center">{{ controller }}:</h3>
             <form action="" method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="Add Game">
+                {{ form | crispy }}
+                <br>
+                <input type="submit" value="{{ controller }}">
             </form>
         </div>
     </div>

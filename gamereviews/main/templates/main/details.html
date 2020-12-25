@@ -17,6 +17,8 @@
                 <br>
                 <h4><strong>{{ game.company }} - <i>{{ game.release_year }}</i></strong></h4>
                 <h5>Average Rating: {{ game.avg_rating }}/10</h5>
+                <a href="{% url 'main:edit_game' game.id %}" class="btn btn-warning">Edit game</a>
+                <a href="{% url 'main:delete_game' game.id %}" class="btn btn-danger">Delete game</a>
             </div>
         </div>
     </div>
