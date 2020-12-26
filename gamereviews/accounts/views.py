@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('main:home')
     if request.method == "POST":
         form = RegisterForm(request.POST or None)
 
@@ -20,6 +22,8 @@ def register(request):
     return render(request, 'accounts/register.html', { 'form': form })
 
 def login_user(request):
+    if request.user.is_authenticated:
+        return redirect('main:home')
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -38,5 +42,8 @@ def login_user(request):
 
 
 def logout_user(request):
-    logout(request)
-    return redirect('main:home')
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('main:home')
+    else:
+        return redirect('accounts:login_user')
