@@ -10,5 +10,6 @@ urlpatterns = [
     path('editgame/<int:id>/', views.edit_game, name='edit_game'),
     path('deletegame/<int:id>/', views.delete_game, name='delete_game'),
     path('addreview/<int:id>/', views.add_review, name='add_review'),
-    path('editreview/<int:id_game>/<int:id_review>/', views.edit_review, name='edit_review')
+    path('editreview/<int:id_game>/<int:id_review>/', views.edit_review, name='edit_review'),
+    path('deletereview/<int:id_game>/<int:id_review>/', views.delete_review, name='delete_review')
 ]

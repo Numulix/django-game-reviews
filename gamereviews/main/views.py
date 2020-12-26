@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from .forms import *
+from django.db.models import Avg
 
 # Create your views here.
 def home(request):
@@ -11,6 +12,14 @@ def home(request):
 def detail(request, id):
     game = Game.objects.get(pk=id)
     reviews = Review.objects.filter(game=id)
+
+    if reviews:
+        average = reviews.aggregate(Avg('rating'))['rating__avg']
+        average = round(average, 1)
+
+        game.avg_rating = average
+        game.save()
+
     return render(request, 'main/details.html', { 'game': game, 'reviews': reviews })
 
 
@@ -106,5 +115,16 @@ def edit_review(request, id_game, id_review):
             return render(request, 'main/editreview.html', { 'form': form })
         else:
             return redirect('main:details', id_game)
+    else:
+        return redirect('accounts:login_user')
+
+def delete_review(request, id_game, id_review):
+    if request.user.is_authenticated:
+        game = Game.objects.get(id=id_game)
+        review = Review.objects.get(game=game, id=id_review)
+
+        if request.user == review.user:
+            review.delete()
+        return redirect('main:detail', id_game)
     else:
         return redirect('accounts:login_user')

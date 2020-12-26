@@ -18,7 +18,7 @@ class Review(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField(max_length=1024)
-    rating = models.FloatField(default=0)
+    rating = models.FloatField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
 
     def __str__(self):
         return self.user.username
