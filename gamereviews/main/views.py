@@ -6,7 +6,12 @@ from django.db.models import Avg
 
 # Create your views here.
 def home(request):
-    allGames = Game.objects.all()
+    query = request.GET.get('name')
+    allGames = None
+    if query:
+        allGames = Game.objects.filter(name__icontains=query)
+    else:
+        allGames = Game.objects.all()
     return render(request, 'main/index.html', { 'games': allGames })
 
 def detail(request, id):
