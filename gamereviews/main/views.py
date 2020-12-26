@@ -128,8 +128,17 @@ def delete_review(request, id_game, id_review):
         game = Game.objects.get(id=id_game)
         review = Review.objects.get(game=game, id=id_review)
 
-        if request.user == review.user:
+        if request.user == review.user or request.user.is_superuser:
             review.delete()
         return redirect('main:detail', id_game)
+    else:
+        return redirect('accounts:login_user')
+
+def my_profile(request):
+    if request.user.is_authenticated:
+        user_profile = User.objects.get(pk=request.user.id)
+        reviews = Review.objects.filter(user=user_profile)
+
+        return render(request, 'main/profile.html', { 'user_profile': user_profile, 'reviews': reviews })
     else:
         return redirect('accounts:login_user')

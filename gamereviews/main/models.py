@@ -22,3 +22,6 @@ class Review(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_game(self):
+        return self.game

@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h1 class="text-center">{{ user_profile.username }}</h1>
+                    <h3 class="text-center">{{ user_profile.first_name }} {{ user_profile.last_name }}</h3>
+                </div>
+                <div class="col-md-5">
+                    <h2 class="text-center">All User Reviews:</h2>
+                    <br>
+                    {% for review in reviews %}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="class-md-4">
+                                <h4><a href="{% url 'main:detail' review.get_game.id %}">{{ review.get_game.name }}</a></h4>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
