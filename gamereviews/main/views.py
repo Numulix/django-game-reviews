@@ -10,7 +10,8 @@ def home(request):
 
 def detail(request, id):
     game = Game.objects.get(pk=id)
-    return render(request, 'main/details.html', { 'game': game })
+    reviews = Review.objects.filter(game=id)
+    return render(request, 'main/details.html', { 'game': game, 'reviews': reviews })
 
 
 # Dodavanje igrice u bazu
@@ -63,3 +64,47 @@ def delete_game(request, id):
         else:
             return redirect('main:home')
     return redirect('accounts:logins')
+
+
+def add_review(request, id):
+    if request.user.is_authenticated:
+        game = Game.objects.get(pk=id)
+
+        if request.method == 'POST':
+            form = ReviewForm(request.POST or None)
+
+            if form.is_valid():
+                data = form.save(commit=False)
+                data.comment = request.POST['comment']
+                data.rating = request.POST['rating']
+                data.user = request.user
+                data.game = game
+                data.save()
+                return redirect('main:detail', id)
+        else:
+            form = ReviewForm()
+        return render(request, 'main/details.html', { 'form': form })
+    else:
+        return redirect('accounts:login_user')
+
+
+def edit_review(request, id_game, id_review):
+    if request.user.is_authenticated:
+        game = Game.objects.get(pk=id_game)
+        review = Review.objects.get(game=game, id=id_review)
+
+        if request.user == review.user:
+            if request.method == 'POST':
+                form = ReviewForm(request.POST, instance=review)
+
+                if form.is_valid():
+                    data = form.save(commit=False)
+                    data.save()
+                    return redirect('main:detail', id_game)
+            else:
+                form = ReviewForm(instance=review)
+            return render(request, 'main/editreview.html', { 'form': form })
+        else:
+            return redirect('main:details', id_game)
+    else:
+        return redirect('accounts:login_user')
