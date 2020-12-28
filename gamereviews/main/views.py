@@ -43,7 +43,8 @@ def add_game(request):
                 form = GameForm()
             return render(request, 'main/addgame.html', { 'form': form, 'controller': 'Add game' })
         else:
-            return redirect('main:home')
+            # return redirect('main:home')
+            return render(request, 'main/index.html', {'error': 1, 'games': Game.objects.all() })
     return redirect('accounts:login_user')
 
 
