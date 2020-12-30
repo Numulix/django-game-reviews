@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from .forms import *
@@ -15,7 +15,7 @@ def home(request):
     return render(request, 'main/index.html', { 'games': allGames })
 
 def detail(request, id):
-    game = Game.objects.get(pk=id)
+    game = get_object_or_404(Game, pk=id)
     reviews = Review.objects.filter(game=id)
 
     if reviews:
@@ -52,7 +52,7 @@ def add_game(request):
 def edit_game(request, id):
     if request.user.is_authenticated:
         if request.user.is_superuser:
-            game = Game.objects.get(pk=id)
+            game = get_object_or_404(Game, pk=id)
 
             if request.method == "POST":
                 form = GameForm(request.POST or None, instance=game)
@@ -72,7 +72,7 @@ def edit_game(request, id):
 def delete_game(request, id):
     if request.user.is_authenticated:
         if request.user.is_superuser:
-            game = Game.objects.get(pk=id)
+            game = get_object_or_404(Game, pk=id)
 
             game.delete()
             return redirect('main:home')
@@ -108,7 +108,7 @@ def edit_review(request, id_game, id_review):
         game = Game.objects.get(pk=id_game)
         review = Review.objects.get(game=game, id=id_review)
 
-        if request.user == review.user:
+        if request.user == review.user or request.user.is_superuser:
             if request.method == 'POST':
                 form = ReviewForm(request.POST, instance=review)
 
